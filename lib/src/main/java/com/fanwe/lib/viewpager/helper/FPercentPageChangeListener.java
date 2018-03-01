@@ -12,8 +12,14 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
 
     private int mScrollState = ViewPager.SCROLL_STATE_IDLE;
     private float mLastOffset = -1;
-
     private int mLastPosition = -1;
+
+    private boolean mIsDebug;
+
+    public void setDebug(boolean debug)
+    {
+        mIsDebug = debug;
+    }
 
     private void notifyShowPercent(int position, float percent, boolean isEnter, boolean isMoveLeft)
     {
@@ -27,7 +33,11 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
     {
-        Log.i(TAG, position + " " + positionOffset);
+        if (mIsDebug)
+        {
+            Log.i(TAG, position + " " + positionOffset);
+        }
+
         final float currentOffset = position + positionOffset;
         if (mLastOffset < 0)
         {
@@ -71,9 +81,19 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
             final int diff = position - mLastPosition;
             if (Math.abs(diff) > 1)
             {
-                for (int i = mLastPosition + 1; i < position; i++)
+                final int start = Math.min(position, mLastPosition) + 1;
+                final int end = Math.max(position, mLastPosition);
+                for (int i = start; i < end; i++)
                 {
+                    if (i == leavePosition || i == enterPosition)
+                    {
+                        continue;
+                    }
                     notifyShowPercent(i, 0, false, isMoveLeft);
+                    if (mIsDebug)
+                    {
+                        Log.e(TAG, "notify reset:" + i);
+                    }
                 }
             }
         }
