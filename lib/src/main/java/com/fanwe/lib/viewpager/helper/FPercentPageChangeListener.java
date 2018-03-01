@@ -1,7 +1,6 @@
 package com.fanwe.lib.viewpager.helper;
 
 import android.support.v4.view.ViewPager;
-import android.util.SparseArray;
 
 /**
  * Created by zhengjun on 2018/3/1.
@@ -10,14 +9,9 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
 {
     private int mScrollState = ViewPager.SCROLL_STATE_IDLE;
     private float mLastOffset = -1;
-    private SparseArray<Float> mArrShowPercent = new SparseArray<>();
+    private float[] mArrShowPercent;
 
     private int mPageCount;
-
-    private int getPageCount()
-    {
-        return mPageCount;
-    }
 
     public void setPageCount(int pageCount)
     {
@@ -30,15 +24,16 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
 
     private void initShowPercent()
     {
-        mArrShowPercent.clear();
-        final int pageCount = getPageCount();
+        final int pageCount = mPageCount;
         if (pageCount <= 0)
         {
             return;
         }
+
+        mArrShowPercent = new float[pageCount];
         for (int i = 0; i < pageCount; i++)
         {
-            mArrShowPercent.put(i, 0f);
+            mArrShowPercent[i] = 0f;
         }
     }
 
@@ -49,7 +44,7 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
             return;
         }
         onShowPercent(position, percent, isEnter, isMoveLeft);
-        mArrShowPercent.put(position, percent);
+        mArrShowPercent[position] = percent;
     }
 
     @Override
@@ -95,14 +90,14 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
 
         if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
         {
-            final int pageCount = getPageCount();
-            for (int i = 0; i < pageCount; i++)
+            final int count = mArrShowPercent.length;
+            for (int i = 0; i < count; i++)
             {
                 if (i == leavePosition || i == enterPosition)
                 {
                     continue;
                 }
-                Float showPercent = mArrShowPercent.get(i, -1f);
+                float showPercent = mArrShowPercent[i];
                 if (showPercent != 0f)
                 {
                     notifyShowPercent(i, 0, false, isMoveLeft);
