@@ -9,7 +9,7 @@ import android.util.SparseArray;
 public abstract class FPercentPageChangeListener implements ViewPager.OnPageChangeListener
 {
     private int mScrollState = ViewPager.SCROLL_STATE_IDLE;
-    private float mLastPositionOffsetSum = -1;
+    private float mLastOffset = -1;
     private SparseArray<Float> mArrShowPercent = new SparseArray<>();
 
     private int mPageCount;
@@ -55,40 +55,40 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
     {
-        final float currentPositionOffsetSum = position + positionOffset;
-        if (mLastPositionOffsetSum < 0)
+        final float currentOffset = position + positionOffset;
+        if (mLastOffset < 0)
         {
-            mLastPositionOffsetSum = currentPositionOffsetSum;
+            mLastOffset = currentOffset;
         }
 
         if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
         {
-            if (currentPositionOffsetSum == mLastPositionOffsetSum)
+            if (currentOffset == mLastOffset)
             {
                 // 已经拖动到边界，继续拖动不处理
                 return;
             }
         }
 
-        final boolean isMoveLeft = currentPositionOffsetSum >= mLastPositionOffsetSum;
+        final boolean isMoveLeft = currentOffset >= mLastOffset; //内容是否向左滑动
 
         int leavePosition = 0;
         int enterPosition = 0;
         if (isMoveLeft)
         {
-            //手指向左
-            leavePosition = position;
-            enterPosition = position + 1;
-
             if (positionOffset == 0)
             {
-                leavePosition--;
-                enterPosition--;
+                //刚好滑动到新的一页
+                leavePosition = position - 1;
+                enterPosition = position;
                 positionOffset = 1.0f;
+            } else
+            {
+                leavePosition = position;
+                enterPosition = position + 1;
             }
         } else
         {
-            //手指向右
             leavePosition = position + 1;
             enterPosition = position;
         }
@@ -120,7 +120,7 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
             notifyShowPercent(enterPosition, 1 - positionOffset, true, isMoveLeft);
         }
 
-        mLastPositionOffsetSum = currentPositionOffsetSum;
+        mLastOffset = currentOffset;
     }
 
     @Override
