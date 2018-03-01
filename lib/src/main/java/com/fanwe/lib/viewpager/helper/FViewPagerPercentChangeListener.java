@@ -6,9 +6,9 @@ import android.util.Log;
 /**
  * Created by zhengjun on 2018/3/1.
  */
-public abstract class FPercentPageChangeListener implements ViewPager.OnPageChangeListener
+public abstract class FViewPagerPercentChangeListener implements ViewPager.OnPageChangeListener
 {
-    private static final String TAG = FPercentPageChangeListener.class.getSimpleName();
+    private static final String TAG = FViewPagerPercentChangeListener.class.getSimpleName();
 
     private int mScrollState = ViewPager.SCROLL_STATE_IDLE;
     private float mLastOffset = -1;
