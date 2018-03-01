@@ -1,41 +1,19 @@
 package com.fanwe.lib.viewpager.helper;
 
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 /**
  * Created by zhengjun on 2018/3/1.
  */
 public abstract class FPercentPageChangeListener implements ViewPager.OnPageChangeListener
 {
+    private static final String TAG = FPercentPageChangeListener.class.getSimpleName();
+
     private int mScrollState = ViewPager.SCROLL_STATE_IDLE;
     private float mLastOffset = -1;
-    private float[] mArrShowPercent;
 
-    private int mPageCount;
-
-    public void setPageCount(int pageCount)
-    {
-        if (mPageCount != pageCount)
-        {
-            mPageCount = pageCount;
-            initShowPercent();
-        }
-    }
-
-    private void initShowPercent()
-    {
-        final int pageCount = mPageCount;
-        if (pageCount <= 0)
-        {
-            return;
-        }
-
-        mArrShowPercent = new float[pageCount];
-        for (int i = 0; i < pageCount; i++)
-        {
-            mArrShowPercent[i] = 0f;
-        }
-    }
+    private int mLastPosition = -1;
 
     private void notifyShowPercent(int position, float percent, boolean isEnter, boolean isMoveLeft)
     {
@@ -44,12 +22,12 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
             return;
         }
         onShowPercent(position, percent, isEnter, isMoveLeft);
-        mArrShowPercent[position] = percent;
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
     {
+        Log.i(TAG, position + " " + positionOffset);
         final float currentOffset = position + positionOffset;
         if (mLastOffset < 0)
         {
@@ -90,15 +68,10 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
 
         if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
         {
-            final int count = mArrShowPercent.length;
-            for (int i = 0; i < count; i++)
+            final int diff = position - mLastPosition;
+            if (Math.abs(diff) > 1)
             {
-                if (i == leavePosition || i == enterPosition)
-                {
-                    continue;
-                }
-                float showPercent = mArrShowPercent[i];
-                if (showPercent != 0f)
+                for (int i = mLastPosition + 1; i < position; i++)
                 {
                     notifyShowPercent(i, 0, false, isMoveLeft);
                 }
@@ -116,6 +89,7 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
         }
 
         mLastOffset = currentOffset;
+        mLastPosition = position;
     }
 
     @Override
