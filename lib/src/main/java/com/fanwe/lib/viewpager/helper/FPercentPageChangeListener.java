@@ -61,69 +61,66 @@ public abstract class FPercentPageChangeListener implements ViewPager.OnPageChan
             mLastPositionOffsetSum = currentPositionOffsetSum;
         }
 
-        boolean process = true;
         if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
         {
             if (currentPositionOffsetSum == mLastPositionOffsetSum)
             {
                 // 已经拖动到边界，继续拖动不处理
-                process = false;
+                return;
             }
         }
-        if (process)
+
+        final boolean isMoveLeft = currentPositionOffsetSum >= mLastPositionOffsetSum;
+
+        int leavePosition = 0;
+        int enterPosition = 0;
+        if (isMoveLeft)
         {
-            final boolean isMoveLeft = currentPositionOffsetSum >= mLastPositionOffsetSum;
+            //手指向左
+            leavePosition = position;
+            enterPosition = position + 1;
 
-            int leavePosition = 0;
-            int enterPosition = 0;
-            if (isMoveLeft)
+            if (positionOffset == 0)
             {
-                //手指向左
-                leavePosition = position;
-                enterPosition = position + 1;
-
-                if (positionOffset == 0)
-                {
-                    leavePosition--;
-                    enterPosition--;
-                    positionOffset = 1.0f;
-                }
-            } else
-            {
-                //手指向右
-                leavePosition = position + 1;
-                enterPosition = position;
+                leavePosition--;
+                enterPosition--;
+                positionOffset = 1.0f;
             }
-
-            if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
-            {
-                final int pageCount = getPageCount();
-                for (int i = 0; i < pageCount; i++)
-                {
-                    if (i == leavePosition || i == enterPosition)
-                    {
-                        continue;
-                    }
-                    Float showPercent = mArrShowPercent.get(i, -1f);
-                    if (showPercent != 0f)
-                    {
-                        notifyShowPercent(i, 0, false, isMoveLeft);
-                    }
-                }
-            }
-
-            if (isMoveLeft)
-            {
-                notifyShowPercent(leavePosition, 1 - positionOffset, false, isMoveLeft);
-                notifyShowPercent(enterPosition, positionOffset, true, isMoveLeft);
-            } else
-            {
-                notifyShowPercent(leavePosition, positionOffset, false, isMoveLeft);
-                notifyShowPercent(enterPosition, 1 - positionOffset, true, isMoveLeft);
-            }
-
-            mLastPositionOffsetSum = currentPositionOffsetSum;
+        } else
+        {
+            //手指向右
+            leavePosition = position + 1;
+            enterPosition = position;
         }
+
+        if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
+        {
+            final int pageCount = getPageCount();
+            for (int i = 0; i < pageCount; i++)
+            {
+                if (i == leavePosition || i == enterPosition)
+                {
+                    continue;
+                }
+                Float showPercent = mArrShowPercent.get(i, -1f);
+                if (showPercent != 0f)
+                {
+                    notifyShowPercent(i, 0, false, isMoveLeft);
+                }
+            }
+        }
+
+        if (isMoveLeft)
+        {
+            notifyShowPercent(leavePosition, 1 - positionOffset, false, isMoveLeft);
+            notifyShowPercent(enterPosition, positionOffset, true, isMoveLeft);
+        } else
+        {
+            notifyShowPercent(leavePosition, positionOffset, false, isMoveLeft);
+            notifyShowPercent(enterPosition, 1 - positionOffset, true, isMoveLeft);
+        }
+
+        mLastPositionOffsetSum = currentPositionOffsetSum;
     }
 
     @Override
