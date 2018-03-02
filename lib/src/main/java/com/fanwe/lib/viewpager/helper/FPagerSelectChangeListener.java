@@ -1,6 +1,5 @@
 package com.fanwe.lib.viewpager.helper;
 
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 /**
@@ -14,7 +13,7 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
     protected void onInit(ViewPager viewPager)
     {
         super.onInit(viewPager);
-        viewPager.addOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
+        mDataSetObserverInternal.setViewPager(viewPager);
         updateSelected();
     }
 
@@ -22,13 +21,13 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
     protected void onRelease(ViewPager viewPager)
     {
         super.onRelease(viewPager);
-        viewPager.removeOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
+        mDataSetObserverInternal.setViewPager(viewPager);
     }
 
-    private ViewPager.OnAdapterChangeListener mOnAdapterChangeListenerInternal = new ViewPager.OnAdapterChangeListener()
+    private FPagerDataSetObserver mDataSetObserverInternal = new FPagerDataSetObserver()
     {
         @Override
-        public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
+        protected void onChanged()
         {
             updateSelected();
         }
