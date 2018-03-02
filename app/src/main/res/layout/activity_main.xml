@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="jump" />
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="100dp">
@@ -25,11 +19,6 @@
                 android:orientation="horizontal"></LinearLayout>
 
         </HorizontalScrollView>
-
-        <com.fanwe.viewpager_helper.track.PagerIndicatorTrack
-            android:id="@+id/view_track"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
     </FrameLayout>
 

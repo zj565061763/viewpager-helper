@@ -12,9 +12,6 @@ import android.widget.LinearLayout;
 
 import com.fanwe.lib.viewpager.helper.FPagerPercentChangeListener;
 import com.fanwe.lib.viewpager.helper.FPagerSelectChangeListener;
-import com.fanwe.viewpager_helper.track.PagerIndicatorItem;
-import com.fanwe.viewpager_helper.track.PagerIndicatorTrack;
-import com.fanwe.viewpager_helper.track.PositionData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,6 @@ public class MainActivity extends AppCompatActivity
     private List<String> mListModel = new ArrayList<>();
 
     private LinearLayout mLinearLayout;
-    private PagerIndicatorTrack mPagerIndicatorTrack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,7 +31,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mLinearLayout = findViewById(R.id.ll);
-        mPagerIndicatorTrack = findViewById(R.id.view_track);
         mViewPager = findViewById(R.id.viewpager);
 
         mViewPager.setAdapter(mAdapter);
@@ -44,18 +39,6 @@ public class MainActivity extends AppCompatActivity
         mPagerPercentChangeListener.setViewPager(mViewPager);
 
         fillData();
-
-        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener()
-        {
-            private int index = 0;
-
-            @Override
-            public void onClick(View v)
-            {
-                index += 17;
-                mViewPager.setCurrentItem(index % mListModel.size());
-            }
-        });
     }
 
     private void fillData()
@@ -76,14 +59,6 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onShowPercent(int position, float showPercent, boolean isEnter, boolean isMoveLeft)
         {
-            PositionData data = null;
-            PagerIndicatorItem item = (PagerIndicatorItem) mLinearLayout.getChildAt(position);
-            if (item != null)
-            {
-                data = item.getPositionData();
-            }
-            mPagerIndicatorTrack.onShowPercent(position, showPercent, isEnter, isMoveLeft, data);
-
             if (isEnter)
             {
                 Log.i(TAG, position + " (" + showPercent + ") " + isMoveLeft);
@@ -105,18 +80,18 @@ public class MainActivity extends AppCompatActivity
             mLinearLayout.removeAllViews();
             for (int i = 0; i < count; i++)
             {
-                final int index = i;
                 PagerIndicatorItem item = new PagerIndicatorItem(MainActivity.this);
-                item.getTextView().setText(String.valueOf(i));
+                item.setText(String.valueOf(i));
                 item.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        mViewPager.setCurrentItem(index);
+                        mViewPager.setCurrentItem(mLinearLayout.indexOfChild(v));
                     }
                 });
-                mLinearLayout.addView(item, new ViewGroup.LayoutParams(50, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                mLinearLayout.addView(item, new ViewGroup.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
             Log.i(TAG, "onPageCountChanged:" + count);
         }
