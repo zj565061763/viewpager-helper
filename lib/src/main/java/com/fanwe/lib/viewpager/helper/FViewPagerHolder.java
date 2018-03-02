@@ -43,7 +43,7 @@ public abstract class FViewPagerHolder
      *
      * @return
      */
-    protected final PagerAdapter getAdapter()
+    public final PagerAdapter getAdapter()
     {
         final ViewPager viewPager = getViewPager();
         return viewPager == null ? null : viewPager.getAdapter();
@@ -54,7 +54,7 @@ public abstract class FViewPagerHolder
      *
      * @return
      */
-    protected final int getAdapterCount()
+    public final int getAdapterCount()
     {
         final PagerAdapter adapter = getAdapter();
         return adapter == null ? 0 : adapter.getCount();
@@ -66,7 +66,7 @@ public abstract class FViewPagerHolder
      * @param index
      * @return
      */
-    protected final boolean isIndexLegal(int index)
+    public final boolean isIndexLegal(int index)
     {
         if (index < 0 || index >= getAdapterCount())
         {
