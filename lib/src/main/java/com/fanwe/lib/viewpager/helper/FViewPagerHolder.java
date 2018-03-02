@@ -68,16 +68,13 @@ public abstract class FViewPagerHolder
      */
     protected final boolean isIndexLegal(int index)
     {
-        PagerAdapter adapter = getAdapter();
-        if (adapter == null)
+        if (index < 0 || index >= getAdapterCount())
         {
             return false;
-        }
-        if (index < 0 || index >= adapter.getCount())
+        } else
         {
-            return false;
+            return true;
         }
-        return true;
     }
 
     protected abstract void onInit(ViewPager viewPager);
