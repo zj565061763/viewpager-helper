@@ -4,11 +4,11 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 /**
- * Created by zhengjun on 2018/3/1.
+ * 页面滚动百分比监听
  */
-public abstract class FViewPagerPercentChangeListener implements ViewPager.OnPageChangeListener
+public abstract class FPagerPercentChangeListener extends FPagerChangeListener
 {
-    private static final String TAG = FViewPagerPercentChangeListener.class.getSimpleName();
+    private static final String TAG = FPagerPercentChangeListener.class.getSimpleName();
 
     private int mScrollState = ViewPager.SCROLL_STATE_IDLE;
     private float mLastOffset = -1;

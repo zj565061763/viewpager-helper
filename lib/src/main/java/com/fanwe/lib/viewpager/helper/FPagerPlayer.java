@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference;
 /**
  * ViewPager轮播类
  */
-public class FViewPagerPlayer
+public class FPagerPlayer
 {
     /**
      * 默认轮播间隔

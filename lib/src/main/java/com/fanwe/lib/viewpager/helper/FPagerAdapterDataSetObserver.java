@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by zhengjun on 2018/3/1.
  */
-public abstract class FViewPagerAdapterDataSetObserver extends DataSetObserver
+public abstract class FPagerAdapterDataSetObserver extends DataSetObserver
 {
     private WeakReference<PagerAdapter> mAdapter;
 
