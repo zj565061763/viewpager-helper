@@ -5,12 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.lang.ref.WeakReference;
-
 /**
  * ViewPager轮播类
  */
-public class FPagerPlayer
+public class FPagerPlayer extends FViewPagerHolder
 {
     /**
      * 默认轮播间隔
@@ -21,32 +19,16 @@ public class FPagerPlayer
     private boolean mIsPlaying = false;
     private CountDownTimer mTimer;
 
-    private WeakReference<ViewPager> mViewPager;
-
-    /**
-     * 设置要播放的ViewPager
-     *
-     * @param viewPager
-     */
-    public void setViewPager(ViewPager viewPager)
+    @Override
+    protected void onInit(ViewPager viewPager)
     {
-        final ViewPager old = getViewPager();
-        if (old != viewPager)
-        {
-            if (viewPager != null)
-            {
-                mViewPager = new WeakReference<>(viewPager);
-                viewPager.setOnTouchListener(mInternalOnTouchListener);
-            } else
-            {
-                mViewPager = null;
-            }
-        }
+        viewPager.setOnTouchListener(mInternalOnTouchListener);
     }
 
-    public ViewPager getViewPager()
+    @Override
+    protected void onRelease(ViewPager viewPager)
     {
-        return mViewPager == null ? null : mViewPager.get();
+
     }
 
     private View.OnTouchListener mInternalOnTouchListener = new View.OnTouchListener()
@@ -79,9 +61,7 @@ public class FPagerPlayer
      */
     protected boolean canPlay()
     {
-        if (getViewPager() == null
-                || getViewPager().getAdapter() == null
-                || getViewPager().getAdapter().getCount() <= 1)
+        if (getAdapterCount() <= 1)
         {
             stopPlay();
             return false;
@@ -159,7 +139,7 @@ public class FPagerPlayer
         {
             int current = getViewPager().getCurrentItem();
             current++;
-            if (current >= getViewPager().getAdapter().getCount())
+            if (current >= getAdapterCount())
             {
                 current = 0;
             }

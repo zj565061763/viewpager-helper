@@ -39,19 +39,36 @@ public abstract class FViewPagerHolder
     }
 
     /**
+     * 返回Adapter
+     *
+     * @return
+     */
+    protected final PagerAdapter getAdapter()
+    {
+        final ViewPager viewPager = getViewPager();
+        return viewPager == null ? null : viewPager.getAdapter();
+    }
+
+    /**
+     * 返回Adapter的数据量
+     *
+     * @return
+     */
+    protected final int getAdapterCount()
+    {
+        final PagerAdapter adapter = getAdapter();
+        return adapter == null ? 0 : adapter.getCount();
+    }
+
+    /**
      * 位置是否合法
      *
      * @param index
      * @return
      */
-    protected boolean isIndexLegal(int index)
+    protected final boolean isIndexLegal(int index)
     {
-        ViewPager viewPager = getViewPager();
-        if (viewPager == null)
-        {
-            return false;
-        }
-        PagerAdapter adapter = viewPager.getAdapter();
+        PagerAdapter adapter = getAdapter();
         if (adapter == null)
         {
             return false;
