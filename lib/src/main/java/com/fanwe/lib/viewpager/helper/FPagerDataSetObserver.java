@@ -12,46 +12,46 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
     @Override
     protected void onInit(ViewPager viewPager)
     {
-        viewPager.addOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
+        viewPager.addOnAdapterChangeListener(mOnAdapterChangeListener);
 
         PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
         {
-            adapter.registerDataSetObserver(mDataSetObserverInternal);
+            adapter.registerDataSetObserver(mDataSetObserver);
         }
     }
 
     @Override
     protected void onRelease(ViewPager viewPager)
     {
-        viewPager.removeOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
+        viewPager.removeOnAdapterChangeListener(mOnAdapterChangeListener);
 
         PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
         {
-            adapter.unregisterDataSetObserver(mDataSetObserverInternal);
+            adapter.unregisterDataSetObserver(mDataSetObserver);
         }
     }
 
-    private ViewPager.OnAdapterChangeListener mOnAdapterChangeListenerInternal = new ViewPager.OnAdapterChangeListener()
+    private ViewPager.OnAdapterChangeListener mOnAdapterChangeListener = new ViewPager.OnAdapterChangeListener()
     {
         @Override
         public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
         {
             if (oldAdapter != null)
             {
-                oldAdapter.unregisterDataSetObserver(mDataSetObserverInternal);
+                oldAdapter.unregisterDataSetObserver(mDataSetObserver);
             }
             if (newAdapter != null)
             {
-                newAdapter.registerDataSetObserver(mDataSetObserverInternal);
+                newAdapter.registerDataSetObserver(mDataSetObserver);
             }
 
-            mDataSetObserverInternal.onChanged(); //Adapter变化，手动通知一次
+            mDataSetObserver.onChanged(); //Adapter变化，手动通知一次
         }
     };
 
-    private DataSetObserver mDataSetObserverInternal = new DataSetObserver()
+    private DataSetObserver mDataSetObserver = new DataSetObserver()
     {
         @Override
         public void onChanged()

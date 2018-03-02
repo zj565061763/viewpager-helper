@@ -14,7 +14,7 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
     protected void onInit(ViewPager viewPager)
     {
         super.onInit(viewPager);
-        mDataSetObserverInternal.setViewPager(viewPager);
+        mDataSetObserver.setViewPager(viewPager);
         notifyPageCountChangedIfNeed();
         updateSelected();
     }
@@ -23,10 +23,10 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
     protected void onRelease(ViewPager viewPager)
     {
         super.onRelease(viewPager);
-        mDataSetObserverInternal.setViewPager(viewPager);
+        mDataSetObserver.setViewPager(viewPager);
     }
 
-    private FPagerDataSetObserver mDataSetObserverInternal = new FPagerDataSetObserver()
+    private FPagerDataSetObserver mDataSetObserver = new FPagerDataSetObserver()
     {
         @Override
         protected void onChanged()
