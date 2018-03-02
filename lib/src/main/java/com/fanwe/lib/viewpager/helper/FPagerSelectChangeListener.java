@@ -42,7 +42,8 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
         final ViewPager viewPager = getViewPager();
         if (viewPager != null)
         {
-            setSelected(viewPager.getCurrentItem());
+            int index = viewPager.getCurrentItem();
+            setSelected(index);
         }
     }
 
