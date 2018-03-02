@@ -8,14 +8,14 @@ import android.support.v4.view.ViewPager;
 public abstract class FPagerChangeListener extends FViewPagerHolder implements ViewPager.OnPageChangeListener
 {
     @Override
-    protected void onRelease(ViewPager viewPager)
-    {
-        viewPager.removeOnPageChangeListener(this);
-    }
-
-    @Override
     protected void onInit(ViewPager viewPager)
     {
         viewPager.addOnPageChangeListener(this);
+    }
+
+    @Override
+    protected void onRelease(ViewPager viewPager)
+    {
+        viewPager.removeOnPageChangeListener(this);
     }
 }
