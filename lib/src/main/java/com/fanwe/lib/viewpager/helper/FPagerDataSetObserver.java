@@ -5,7 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 /**
- * Created by zhengjun on 2018/3/1.
+ * PagerAdapter数据集变化监听
  */
 public abstract class FPagerDataSetObserver extends FViewPagerHolder implements ViewPager.OnAdapterChangeListener
 {
