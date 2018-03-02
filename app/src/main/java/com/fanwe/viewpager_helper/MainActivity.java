@@ -8,8 +8,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
-import com.fanwe.lib.viewpager.helper.FPercentPageChangeListener;
+import com.fanwe.lib.viewpager.helper.FPagerCountChangeListener;
+import com.fanwe.lib.viewpager.helper.FPagerDataSetObserver;
+import com.fanwe.lib.viewpager.helper.FPagerPercentChangeListener;
+import com.fanwe.lib.viewpager.helper.FPagerSelectChangeListener;
+import com.fanwe.viewpager_helper.track.PagerIndicatorItem;
+import com.fanwe.viewpager_helper.track.PagerIndicatorTrack;
+import com.fanwe.viewpager_helper.track.PositionData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,34 +28,124 @@ public class MainActivity extends AppCompatActivity
     private ViewPager mViewPager;
     private List<String> mListModel = new ArrayList<>();
 
+    private LinearLayout mLinearLayout;
+    private PagerIndicatorTrack mPagerIndicatorTrack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mLinearLayout = findViewById(R.id.ll);
+        mPagerIndicatorTrack = findViewById(R.id.view_track);
         mViewPager = findViewById(R.id.viewpager);
-        mViewPager.addOnPageChangeListener(new FPercentPageChangeListener()
+
+        mPagerDataSetObserver.setViewPager(mViewPager);
+        mPagerCountChangeListener.setViewPager(mViewPager);
+        mPagerSelectChangeListener.setViewPager(mViewPager);
+        mPagerPercentChangeListener.setViewPager(mViewPager);
+
+        fillData();
+
+        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener()
         {
+            private int index = 0;
+
             @Override
-            public void onShowPercent(int position, float showPercent, boolean isEnter, boolean isMoveLeft)
+            public void onClick(View v)
             {
-                if (isEnter)
-                {
-                    Log.i(TAG, position + " (" + showPercent + ") " + isMoveLeft);
-                } else
-                {
-                    Log.e(TAG, position + " (" + showPercent + ") " + isMoveLeft);
-                }
+                index += 17;
+                mViewPager.setCurrentItem(index % mListModel.size());
             }
         });
+    }
 
-        for (int i = 0; i < 10; i++)
+    private void fillData()
+    {
+        mListModel.clear();
+        for (int i = 0; i < 20; i++)
         {
             mListModel.add(String.valueOf(i));
+
+            final int index = i;
+            PagerIndicatorItem item = new PagerIndicatorItem(this);
+            item.getTextView().setText(String.valueOf(i));
+            item.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mViewPager.setCurrentItem(index);
+                }
+            });
+            mLinearLayout.addView(item, new ViewGroup.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
         mViewPager.setAdapter(mPagerAdapter);
     }
+
+    /**
+     * 滚动百分比监听
+     */
+    private FPagerPercentChangeListener mPagerPercentChangeListener = new FPagerPercentChangeListener()
+    {
+        @Override
+        public void onShowPercent(int position, float showPercent, boolean isEnter, boolean isMoveLeft)
+        {
+            PositionData data = null;
+            PagerIndicatorItem item = (PagerIndicatorItem) mLinearLayout.getChildAt(position);
+            if (item != null)
+            {
+                data = item.getPositionData();
+            }
+            mPagerIndicatorTrack.onShowPercent(position, showPercent, isEnter, isMoveLeft, data);
+
+            if (isEnter)
+            {
+                Log.i(TAG, position + " (" + showPercent + ") " + isMoveLeft);
+            } else
+            {
+                Log.e(TAG, position + " (" + showPercent + ") " + isMoveLeft);
+            }
+        }
+    };
+
+    /**
+     * 选中监听
+     */
+    private FPagerSelectChangeListener mPagerSelectChangeListener = new FPagerSelectChangeListener()
+    {
+        @Override
+        protected void onSelectChanged(int index, boolean selected)
+        {
+            PagerIndicatorItem item = (PagerIndicatorItem) mLinearLayout.getChildAt(index);
+            if (item != null)
+            {
+                item.onSelectChanged(selected);
+            }
+            Log.i(TAG, "onSelectChanged:" + index + " " + selected);
+        }
+    };
+
+    /**
+     * 页面数量变化监听
+     */
+    private FPagerCountChangeListener mPagerCountChangeListener = new FPagerCountChangeListener()
+    {
+        @Override
+        protected void onPageCountChanged(int count)
+        {
+            Log.i(TAG, "onPageCountChanged:" + count);
+        }
+    };
+
+    private FPagerDataSetObserver mPagerDataSetObserver = new FPagerDataSetObserver()
+    {
+        @Override
+        protected void onChanged()
+        {
+            Log.i(TAG, "onDataSetChanged");
+        }
+    };
 
     private PagerAdapter mPagerAdapter = new PagerAdapter()
     {
