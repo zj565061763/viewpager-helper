@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.fanwe.lib.viewpager.helper.FPagerCountChangeListener;
-import com.fanwe.lib.viewpager.helper.FPagerDataSetObserver;
 import com.fanwe.lib.viewpager.helper.FPagerPercentChangeListener;
 import com.fanwe.lib.viewpager.helper.FPagerSelectChangeListener;
 import com.fanwe.viewpager_helper.track.PagerIndicatorItem;
@@ -40,7 +39,8 @@ public class MainActivity extends AppCompatActivity
         mPagerIndicatorTrack = findViewById(R.id.view_track);
         mViewPager = findViewById(R.id.viewpager);
 
-        mPagerDataSetObserver.setViewPager(mViewPager);
+        mViewPager.setAdapter(mPagerAdapter);
+
         mPagerCountChangeListener.setViewPager(mViewPager);
         mPagerSelectChangeListener.setViewPager(mViewPager);
         mPagerPercentChangeListener.setViewPager(mViewPager);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
             });
             mLinearLayout.addView(item, new ViewGroup.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
-        mViewPager.setAdapter(mPagerAdapter);
+        mPagerAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -135,15 +135,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPageCountChanged(int count)
         {
             Log.i(TAG, "onPageCountChanged:" + count);
-        }
-    };
-
-    private FPagerDataSetObserver mPagerDataSetObserver = new FPagerDataSetObserver()
-    {
-        @Override
-        protected void onChanged()
-        {
-            Log.i(TAG, "onDataSetChanged");
         }
     };
 
