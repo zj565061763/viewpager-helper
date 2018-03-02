@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         mPagerIndicatorTrack = findViewById(R.id.view_track);
         mViewPager = findViewById(R.id.viewpager);
 
-        mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setAdapter(mAdapter);
 
         mPagerCountChangeListener.setViewPager(mViewPager);
         mPagerSelectChangeListener.setViewPager(mViewPager);
@@ -66,21 +66,8 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < 20; i++)
         {
             mListModel.add(String.valueOf(i));
-
-            final int index = i;
-            PagerIndicatorItem item = new PagerIndicatorItem(this);
-            item.getTextView().setText(String.valueOf(i));
-            item.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    mViewPager.setCurrentItem(index);
-                }
-            });
-            mLinearLayout.addView(item, new ViewGroup.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
-        mPagerAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -134,11 +121,27 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPageCountChanged(int count)
         {
+            mLinearLayout.removeAllViews();
+            for (int i = 0; i < count; i++)
+            {
+                final int index = i;
+                PagerIndicatorItem item = new PagerIndicatorItem(MainActivity.this);
+                item.getTextView().setText(String.valueOf(i));
+                item.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        mViewPager.setCurrentItem(index);
+                    }
+                });
+                mLinearLayout.addView(item, new ViewGroup.LayoutParams(50, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
             Log.i(TAG, "onPageCountChanged:" + count);
         }
     };
 
-    private PagerAdapter mPagerAdapter = new PagerAdapter()
+    private PagerAdapter mAdapter = new PagerAdapter()
     {
         @Override
         public int getItemPosition(Object object)
