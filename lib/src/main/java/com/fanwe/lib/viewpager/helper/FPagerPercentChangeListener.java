@@ -23,11 +23,10 @@ public abstract class FPagerPercentChangeListener extends FPagerChangeListener
 
     private void notifyShowPercent(int position, float percent, boolean isEnter, boolean isMoveLeft)
     {
-        if (position < 0)
+        if (isIndexLegal(position))
         {
-            return;
+            onShowPercent(position, percent, isEnter, isMoveLeft);
         }
-        onShowPercent(position, percent, isEnter, isMoveLeft);
     }
 
     @Override

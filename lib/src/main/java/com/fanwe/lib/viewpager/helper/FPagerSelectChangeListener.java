@@ -45,14 +45,12 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener im
 
     private void setSelected(int index)
     {
-        if (!isIndexLegal(index))
+        if (isIndexLegal(index))
         {
-            return;
+            notifySelectedChanged(mLastSelected, false);
+            notifySelectedChanged(index, true);
+            mLastSelected = index;
         }
-
-        notifySelectedChanged(mLastSelected, false);
-        notifySelectedChanged(index, true);
-        mLastSelected = index;
     }
 
     private void notifySelectedChanged(int index, boolean selected)
