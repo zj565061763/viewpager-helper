@@ -43,8 +43,9 @@ public abstract class FPagerDataSetObserver extends FPagerAdapterChangeListener
         if (newAdapter != null)
         {
             newAdapter.registerDataSetObserver(mDataSetObserverInternal);
-            mDataSetObserverInternal.onChanged(); //Adapter变化，手动通知一次
         }
+
+        mDataSetObserverInternal.onChanged(); //Adapter变化，手动通知一次
     }
 
     private DataSetObserver mDataSetObserverInternal = new DataSetObserver()
