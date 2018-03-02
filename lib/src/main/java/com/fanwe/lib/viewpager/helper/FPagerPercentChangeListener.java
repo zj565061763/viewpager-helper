@@ -1,25 +1,15 @@
 package com.fanwe.lib.viewpager.helper;
 
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 /**
  * 页面滚动百分比监听
  */
 public abstract class FPagerPercentChangeListener extends FPagerChangeListener
 {
-    private static final String TAG = FPagerPercentChangeListener.class.getSimpleName();
-
     private int mScrollState = ViewPager.SCROLL_STATE_IDLE;
     private float mLastOffset = -1;
     private int mLastPosition = -1;
-
-    private boolean mIsDebug;
-
-    public void setDebug(boolean debug)
-    {
-        mIsDebug = debug;
-    }
 
     private void notifyShowPercent(int position, float percent, boolean isEnter, boolean isMoveLeft)
     {
@@ -32,11 +22,6 @@ public abstract class FPagerPercentChangeListener extends FPagerChangeListener
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
     {
-        if (mIsDebug)
-        {
-            Log.i(TAG, position + " " + positionOffset);
-        }
-
         final float currentOffset = position + positionOffset;
         if (mLastOffset < 0)
         {
@@ -89,10 +74,6 @@ public abstract class FPagerPercentChangeListener extends FPagerChangeListener
                         continue;
                     }
                     notifyShowPercent(i, 0, false, isMoveLeft);
-                    if (mIsDebug)
-                    {
-                        Log.e(TAG, "notify reset:" + i);
-                    }
                 }
             }
         }
