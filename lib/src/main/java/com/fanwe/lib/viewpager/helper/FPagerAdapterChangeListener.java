@@ -1,5 +1,6 @@
 package com.fanwe.lib.viewpager.helper;
 
+import android.support.annotation.CallSuper;
 import android.support.v4.view.ViewPager;
 
 /**
@@ -7,12 +8,14 @@ import android.support.v4.view.ViewPager;
  */
 public abstract class FPagerAdapterChangeListener extends FViewPagerHolder implements ViewPager.OnAdapterChangeListener
 {
+    @CallSuper
     @Override
     protected void onInit(ViewPager viewPager)
     {
         viewPager.addOnAdapterChangeListener(this);
     }
 
+    @CallSuper
     @Override
     protected void onRelease(ViewPager viewPager)
     {

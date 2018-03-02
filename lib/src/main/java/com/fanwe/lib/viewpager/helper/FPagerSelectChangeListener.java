@@ -6,16 +6,14 @@ import android.support.v4.view.ViewPager;
 /**
  * 选中非选中监听
  */
-public abstract class FPagerSelectChangeListener extends FViewPagerHolder implements
-        ViewPager.OnPageChangeListener,
-        ViewPager.OnAdapterChangeListener
+public abstract class FPagerSelectChangeListener extends FPagerChangeListener implements ViewPager.OnAdapterChangeListener
 {
     private int mLastSelected;
 
     @Override
     protected void onInit(ViewPager viewPager)
     {
-        viewPager.addOnPageChangeListener(this);
+        super.onInit(viewPager);
         viewPager.addOnAdapterChangeListener(this);
         updateSelected();
     }
@@ -23,7 +21,7 @@ public abstract class FPagerSelectChangeListener extends FViewPagerHolder implem
     @Override
     protected void onRelease(ViewPager viewPager)
     {
-        viewPager.removeOnPageChangeListener(this);
+        super.onRelease(viewPager);
         viewPager.removeOnAdapterChangeListener(this);
     }
 

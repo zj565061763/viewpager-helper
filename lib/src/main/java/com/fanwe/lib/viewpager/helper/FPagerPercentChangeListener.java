@@ -6,7 +6,7 @@ import android.util.Log;
 /**
  * 页面滚动百分比监听
  */
-public abstract class FPagerPercentChangeListener extends FViewPagerHolder implements ViewPager.OnPageChangeListener
+public abstract class FPagerPercentChangeListener extends FPagerChangeListener
 {
     private static final String TAG = FPagerPercentChangeListener.class.getSimpleName();
 
@@ -15,18 +15,6 @@ public abstract class FPagerPercentChangeListener extends FViewPagerHolder imple
     private int mLastPosition = -1;
 
     private boolean mIsDebug;
-
-    @Override
-    protected void onInit(ViewPager viewPager)
-    {
-        viewPager.addOnPageChangeListener(this);
-    }
-
-    @Override
-    protected void onRelease(ViewPager viewPager)
-    {
-        viewPager.removeOnPageChangeListener(this);
-    }
 
     public void setDebug(boolean debug)
     {
