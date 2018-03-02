@@ -7,12 +7,12 @@ import android.support.v4.view.ViewPager;
 /**
  * PagerAdapter数据集变化监听
  */
-public abstract class FPagerDataSetObserver extends FViewPagerHolder
+public abstract class FPagerDataSetObserver extends FViewPagerHolder implements ViewPager.OnAdapterChangeListener
 {
     @Override
     protected void onInit(ViewPager viewPager)
     {
-        viewPager.addOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
+        viewPager.addOnAdapterChangeListener(this);
 
         PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
@@ -24,7 +24,7 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
     @Override
     protected void onRelease(ViewPager viewPager)
     {
-        viewPager.removeOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
+        viewPager.removeOnAdapterChangeListener(this);
 
         PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
@@ -33,23 +33,20 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
         }
     }
 
-    private ViewPager.OnAdapterChangeListener mOnAdapterChangeListenerInternal = new ViewPager.OnAdapterChangeListener()
+    @Override
+    public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
     {
-        @Override
-        public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
+        if (oldAdapter != null)
         {
-            if (oldAdapter != null)
-            {
-                oldAdapter.unregisterDataSetObserver(mDataSetObserverInternal);
-            }
-            if (newAdapter != null)
-            {
-                newAdapter.registerDataSetObserver(mDataSetObserverInternal);
-            }
-
-            mDataSetObserverInternal.onChanged(); //Adapter变化，手动通知一次
+            oldAdapter.unregisterDataSetObserver(mDataSetObserverInternal);
         }
-    };
+        if (newAdapter != null)
+        {
+            newAdapter.registerDataSetObserver(mDataSetObserverInternal);
+        }
+
+        mDataSetObserverInternal.onChanged(); //Adapter变化，手动通知一次
+    }
 
     private DataSetObserver mDataSetObserverInternal = new DataSetObserver()
     {
