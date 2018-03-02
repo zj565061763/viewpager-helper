@@ -49,17 +49,17 @@ public abstract class FPagerSelectChangeListener extends FViewPagerHolder implem
     {
         if (isIndexLegal(index))
         {
-            notifySelectedChanged(mLastSelected, false);
-            notifySelectedChanged(index, true);
+            notifySelectChanged(mLastSelected, false);
+            notifySelectChanged(index, true);
             mLastSelected = index;
         }
     }
 
-    private void notifySelectedChanged(int index, boolean selected)
+    private void notifySelectChanged(int index, boolean selected)
     {
         if (isIndexLegal(index))
         {
-            onSelectedChanged(index, selected);
+            onSelectChanged(index, selected);
         }
     }
 
@@ -79,5 +79,5 @@ public abstract class FPagerSelectChangeListener extends FViewPagerHolder implem
     {
     }
 
-    protected abstract void onSelectedChanged(int index, boolean selected);
+    protected abstract void onSelectChanged(int index, boolean selected);
 }
