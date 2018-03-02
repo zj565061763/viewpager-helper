@@ -7,11 +7,13 @@ import android.support.v4.view.ViewPager;
 /**
  * PagerAdapter数据集变化监听
  */
-public abstract class FPagerDataSetObserver extends FViewPagerHolder implements ViewPager.OnAdapterChangeListener
+public abstract class FPagerDataSetObserver extends FPagerAdapterChangeListener
 {
     @Override
     protected void onInit(ViewPager viewPager)
     {
+        super.onInit(viewPager);
+
         PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
         {
@@ -22,6 +24,8 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder implements 
     @Override
     protected void onRelease(ViewPager viewPager)
     {
+        super.onRelease(viewPager);
+
         PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
         {
