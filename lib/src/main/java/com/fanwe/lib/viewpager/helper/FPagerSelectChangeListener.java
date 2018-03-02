@@ -8,12 +8,14 @@ import android.support.v4.view.ViewPager;
 public abstract class FPagerSelectChangeListener extends FPagerChangeListener
 {
     private int mLastSelected;
+    private int mCount;
 
     @Override
     protected void onInit(ViewPager viewPager)
     {
         super.onInit(viewPager);
         mDataSetObserverInternal.setViewPager(viewPager);
+        notifyPageCountChangedIfNeed();
         updateSelected();
     }
 
@@ -29,6 +31,7 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
         @Override
         protected void onChanged()
         {
+            notifyPageCountChangedIfNeed();
             updateSelected();
         }
     };
@@ -56,6 +59,16 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
         }
     }
 
+    private void notifyPageCountChangedIfNeed()
+    {
+        final int count = getAdapterCount();
+        if (mCount != count)
+        {
+            onPageCountChanged(count);
+            mCount = count;
+        }
+    }
+
     private void notifySelectChanged(int index, boolean selected)
     {
         if (isIndexLegal(index))
@@ -79,6 +92,13 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
     public void onPageScrollStateChanged(int state)
     {
     }
+
+    /**
+     * 页数发生改变回调
+     *
+     * @param count
+     */
+    protected abstract void onPageCountChanged(int count);
 
     /**
      * 某一页选中或者非选中回调

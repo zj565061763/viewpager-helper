@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.fanwe.lib.viewpager.helper.FPagerCountChangeListener;
 import com.fanwe.lib.viewpager.helper.FPagerPercentChangeListener;
 import com.fanwe.lib.viewpager.helper.FPagerSelectChangeListener;
 import com.fanwe.viewpager_helper.track.PagerIndicatorItem;
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity
 
         mViewPager.setAdapter(mAdapter);
 
-        mPagerCountChangeListener.setViewPager(mViewPager);
         mPagerSelectChangeListener.setViewPager(mViewPager);
         mPagerPercentChangeListener.setViewPager(mViewPager);
 
@@ -102,23 +100,6 @@ public class MainActivity extends AppCompatActivity
     private FPagerSelectChangeListener mPagerSelectChangeListener = new FPagerSelectChangeListener()
     {
         @Override
-        protected void onSelectChanged(int index, boolean selected)
-        {
-            PagerIndicatorItem item = (PagerIndicatorItem) mLinearLayout.getChildAt(index);
-            if (item != null)
-            {
-                item.onSelectChanged(selected);
-            }
-            Log.i(TAG, "onSelectChanged:" + index + " " + selected);
-        }
-    };
-
-    /**
-     * 页面数量变化监听
-     */
-    private FPagerCountChangeListener mPagerCountChangeListener = new FPagerCountChangeListener()
-    {
-        @Override
         protected void onPageCountChanged(int count)
         {
             mLinearLayout.removeAllViews();
@@ -138,6 +119,17 @@ public class MainActivity extends AppCompatActivity
                 mLinearLayout.addView(item, new ViewGroup.LayoutParams(50, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
             Log.i(TAG, "onPageCountChanged:" + count);
+        }
+
+        @Override
+        protected void onSelectChanged(int index, boolean selected)
+        {
+            PagerIndicatorItem item = (PagerIndicatorItem) mLinearLayout.getChildAt(index);
+            if (item != null)
+            {
+                item.onSelectChanged(selected);
+            }
+            Log.i(TAG, "onSelectChanged:" + index + " " + selected);
         }
     };
 
