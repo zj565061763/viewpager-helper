@@ -7,12 +7,12 @@ import android.support.v4.view.ViewPager;
 /**
  * PagerAdapter数据集变化监听
  */
-public abstract class FPagerDataSetObserver extends FPagerAdapterChangeListener
+public abstract class FPagerDataSetObserver extends FViewPagerHolder
 {
     @Override
     protected void onInit(ViewPager viewPager)
     {
-        super.onInit(viewPager);
+        viewPager.addOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
 
         PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
@@ -24,7 +24,7 @@ public abstract class FPagerDataSetObserver extends FPagerAdapterChangeListener
     @Override
     protected void onRelease(ViewPager viewPager)
     {
-        super.onRelease(viewPager);
+        viewPager.removeOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
 
         PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
@@ -33,20 +33,23 @@ public abstract class FPagerDataSetObserver extends FPagerAdapterChangeListener
         }
     }
 
-    @Override
-    public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
+    private ViewPager.OnAdapterChangeListener mOnAdapterChangeListenerInternal = new ViewPager.OnAdapterChangeListener()
     {
-        if (oldAdapter != null)
+        @Override
+        public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
         {
-            oldAdapter.unregisterDataSetObserver(mDataSetObserverInternal);
-        }
-        if (newAdapter != null)
-        {
-            newAdapter.registerDataSetObserver(mDataSetObserverInternal);
-        }
+            if (oldAdapter != null)
+            {
+                oldAdapter.unregisterDataSetObserver(mDataSetObserverInternal);
+            }
+            if (newAdapter != null)
+            {
+                newAdapter.registerDataSetObserver(mDataSetObserverInternal);
+            }
 
-        mDataSetObserverInternal.onChanged(); //Adapter变化，手动通知一次
-    }
+            mDataSetObserverInternal.onChanged(); //Adapter变化，手动通知一次
+        }
+    };
 
     private DataSetObserver mDataSetObserverInternal = new DataSetObserver()
     {
@@ -65,5 +68,7 @@ public abstract class FPagerDataSetObserver extends FPagerAdapterChangeListener
 
     protected abstract void onChanged();
 
-    protected abstract void onInvalidated();
+    protected void onInvalidated()
+    {
+    }
 }

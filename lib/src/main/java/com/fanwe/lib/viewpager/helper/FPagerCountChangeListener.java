@@ -3,7 +3,7 @@ package com.fanwe.lib.viewpager.helper;
 import android.support.v4.view.ViewPager;
 
 /**
- * 页面变化监听
+ * 页面数量变化监听
  */
 public abstract class FPagerCountChangeListener extends FPagerDataSetObserver
 {
@@ -32,5 +32,10 @@ public abstract class FPagerCountChangeListener extends FPagerDataSetObserver
         }
     }
 
+    /**
+     * 页数发生改变回调
+     *
+     * @param count
+     */
     protected abstract void onPageCountChanged(int count);
 }

@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 /**
  * 选中非选中监听
  */
-public abstract class FPagerSelectChangeListener extends FPagerChangeListener implements ViewPager.OnAdapterChangeListener
+public abstract class FPagerSelectChangeListener extends FPagerChangeListener
 {
     private int mLastSelected;
 
@@ -14,7 +14,7 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener im
     protected void onInit(ViewPager viewPager)
     {
         super.onInit(viewPager);
-        viewPager.addOnAdapterChangeListener(this);
+        viewPager.addOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
         updateSelected();
     }
 
@@ -22,14 +22,17 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener im
     protected void onRelease(ViewPager viewPager)
     {
         super.onRelease(viewPager);
-        viewPager.removeOnAdapterChangeListener(this);
+        viewPager.removeOnAdapterChangeListener(mOnAdapterChangeListenerInternal);
     }
 
-    @Override
-    public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
+    private ViewPager.OnAdapterChangeListener mOnAdapterChangeListenerInternal = new ViewPager.OnAdapterChangeListener()
     {
-        updateSelected();
-    }
+        @Override
+        public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
+        {
+            updateSelected();
+        }
+    };
 
     /**
      * 刷新选中位置，用于ViewPager对象变更，或者Adapter对象变更
@@ -77,5 +80,11 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener im
     {
     }
 
+    /**
+     * 某一页选中或者非选中回调
+     *
+     * @param index    第几页
+     * @param selected true-选中，false-未选中
+     */
     protected abstract void onSelectChanged(int index, boolean selected);
 }
