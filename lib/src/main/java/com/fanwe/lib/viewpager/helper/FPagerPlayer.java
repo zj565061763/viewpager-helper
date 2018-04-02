@@ -182,7 +182,10 @@ public class FPagerPlayer extends FViewPagerHolder
 
     private void stopPlayInternal()
     {
-        getHandler().removeCallbacks(mStartTimerRunnable);
+        if (mHandler != null)
+        {
+            mHandler.removeCallbacks(mStartTimerRunnable);
+        }
 
         if (mTimer != null)
         {
