@@ -1,6 +1,8 @@
 package com.fanwe.lib.viewpager.helper;
 
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +20,16 @@ public class FPagerPlayer extends FViewPagerHolder
     private boolean mIsNeedPlay = false;
     private boolean mIsPlaying = false;
     private CountDownTimer mTimer;
+    private Handler mHandler;
+
+    private Handler getHandler()
+    {
+        if (mHandler == null)
+        {
+            mHandler = new Handler(Looper.getMainLooper());
+        }
+        return mHandler;
+    }
 
     @Override
     protected void onInit(ViewPager viewPager)
@@ -128,7 +140,7 @@ public class FPagerPlayer extends FViewPagerHolder
                 {
                 }
             };
-            getViewPager().postDelayed(mStartTimerRunnable, mPlaySpan);
+            getHandler().postDelayed(mStartTimerRunnable, mPlaySpan);
             mIsPlaying = true;
         }
     }
@@ -170,10 +182,7 @@ public class FPagerPlayer extends FViewPagerHolder
 
     private void stopPlayInternal()
     {
-        if (getViewPager() != null)
-        {
-            getViewPager().removeCallbacks(mStartTimerRunnable);
-        }
+        getHandler().removeCallbacks(mStartTimerRunnable);
 
         if (mTimer != null)
         {
