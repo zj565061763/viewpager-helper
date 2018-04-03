@@ -18,6 +18,7 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
         if (adapter != null)
         {
             adapter.registerDataSetObserver(mDataSetObserver);
+            mDataSetObserver.onChanged(); // 手动通知一次
         }
     }
 
@@ -47,7 +48,7 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
                 newAdapter.registerDataSetObserver(mDataSetObserver);
             }
 
-            mDataSetObserver.onChanged(); //Adapter变化，手动通知一次
+            mDataSetObserver.onChanged(); // 手动通知一次
         }
     };
 
