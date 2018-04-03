@@ -57,7 +57,7 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
         @Override
         public void onChanged()
         {
-            FPagerDataSetObserver.this.onChanged();
+            FPagerDataSetObserver.this.onDataSetChanged();
         }
 
         @Override
@@ -67,7 +67,7 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
         }
     };
 
-    protected abstract void onChanged();
+    protected abstract void onDataSetChanged();
 
     protected void onInvalidated()
     {

@@ -5,11 +5,23 @@ import android.support.v4.view.ViewPager;
 /**
  * 页面滚动百分比监听
  */
-public abstract class FPagerPercentChangeListener extends FPagerChangeListener
+public abstract class FPagerPercentChangeListener extends FViewPagerHolder implements ViewPager.OnPageChangeListener
 {
     private int mScrollState = ViewPager.SCROLL_STATE_IDLE;
     private float mLastOffset = -1;
     private int mLastPosition = -1;
+
+    @Override
+    protected void onInit(ViewPager viewPager)
+    {
+        viewPager.addOnPageChangeListener(this);
+    }
+
+    @Override
+    protected void onRelease(ViewPager viewPager)
+    {
+        viewPager.removeOnPageChangeListener(this);
+    }
 
     private void notifyShowPercent(int position, float percent, boolean isEnter, boolean isMoveLeft)
     {

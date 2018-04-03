@@ -75,8 +75,10 @@ public class MainActivity extends AppCompatActivity
     private FPagerSelectChangeListener mPagerSelectChangeListener = new FPagerSelectChangeListener()
     {
         @Override
-        protected void onPageCountChanged(int count)
+        protected void onDataSetChanged()
         {
+            final int count = getAdapterCount();
+
             mLinearLayout.removeAllViews();
             for (int i = 0; i < count; i++)
             {
@@ -93,7 +95,9 @@ public class MainActivity extends AppCompatActivity
 
                 mLinearLayout.addView(item, new ViewGroup.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
-            Log.i(TAG, "onPageCountChanged:" + count);
+            Log.i(TAG, "onDataSetChanged:" + count);
+
+            super.onDataSetChanged();
         }
 
         @Override

@@ -5,36 +5,29 @@ import android.support.v4.view.ViewPager;
 /**
  * 选中非选中监听
  */
-public abstract class FPagerSelectChangeListener extends FPagerChangeListener
+public abstract class FPagerSelectChangeListener extends FPagerDataSetObserver implements ViewPager.OnPageChangeListener
 {
     private int mLastSelected;
-    private int mCount;
 
     @Override
     protected void onInit(ViewPager viewPager)
     {
         super.onInit(viewPager);
-        mDataSetObserver.setViewPager(viewPager);
-        notifyPageCountChangedIfNeed();
-        updateSelected();
+        viewPager.addOnPageChangeListener(this);
     }
 
     @Override
     protected void onRelease(ViewPager viewPager)
     {
         super.onRelease(viewPager);
-        mDataSetObserver.setViewPager(viewPager);
+        viewPager.removeOnPageChangeListener(this);
     }
 
-    private FPagerDataSetObserver mDataSetObserver = new FPagerDataSetObserver()
+    @Override
+    protected void onDataSetChanged()
     {
-        @Override
-        protected void onChanged()
-        {
-            notifyPageCountChangedIfNeed();
-            updateSelected();
-        }
-    };
+        updateSelected();
+    }
 
     /**
      * 刷新选中位置，用于ViewPager对象变更，或者Adapter对象变更
@@ -56,16 +49,6 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
             notifySelectChanged(mLastSelected, false);
             notifySelectChanged(index, true);
             mLastSelected = index;
-        }
-    }
-
-    private void notifyPageCountChangedIfNeed()
-    {
-        final int count = getAdapterCount();
-        if (mCount != count)
-        {
-            onPageCountChanged(count);
-            mCount = count;
         }
     }
 
@@ -92,13 +75,6 @@ public abstract class FPagerSelectChangeListener extends FPagerChangeListener
     public void onPageScrollStateChanged(int state)
     {
     }
-
-    /**
-     * 页数发生改变回调
-     *
-     * @param count
-     */
-    protected abstract void onPageCountChanged(int count);
 
     /**
      * 某一页选中或者非选中回调
