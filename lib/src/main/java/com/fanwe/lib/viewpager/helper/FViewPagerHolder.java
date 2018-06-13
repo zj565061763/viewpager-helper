@@ -20,6 +20,9 @@ import android.support.v4.view.ViewPager;
 
 import java.lang.ref.WeakReference;
 
+/**
+ * ViewPager持有类
+ */
 public abstract class FViewPagerHolder
 {
     private WeakReference<ViewPager> mViewPager;
@@ -35,18 +38,12 @@ public abstract class FViewPagerHolder
         if (old != viewPager)
         {
             if (old != null)
-            {
                 onRelease(old);
-            }
+
+            mViewPager = viewPager == null ? null : new WeakReference<>(viewPager);
 
             if (viewPager != null)
-            {
-                mViewPager = new WeakReference<>(viewPager);
                 onInit(viewPager);
-            } else
-            {
-                mViewPager = null;
-            }
         }
     }
 
