@@ -101,14 +101,14 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onSelectChanged(int index, boolean selected)
+        protected void onSelectedChanged(int index, boolean selected)
         {
             PagerIndicatorItem item = (PagerIndicatorItem) mLinearLayout.getChildAt(index);
             if (item != null)
             {
                 item.onSelectChanged(selected);
             }
-            Log.i(TAG, "onSelectChanged:" + index + " " + selected);
+            Log.i(TAG, "onSelectedChanged:" + index + " " + selected);
         }
     };
 

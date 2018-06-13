@@ -78,7 +78,7 @@ public abstract class FPagerSelectChangeListener extends FPagerDataSetObserver
     private void notifySelectedChanged(int index, boolean selected)
     {
         if (isIndexLegal(index))
-            onSelectChanged(index, selected);
+            onSelectedChanged(index, selected);
     }
 
     /**
@@ -87,5 +87,5 @@ public abstract class FPagerSelectChangeListener extends FPagerDataSetObserver
      * @param index    第几页
      * @param selected true-选中，false-未选中
      */
-    protected abstract void onSelectChanged(int index, boolean selected);
+    protected abstract void onSelectedChanged(int index, boolean selected);
 }
