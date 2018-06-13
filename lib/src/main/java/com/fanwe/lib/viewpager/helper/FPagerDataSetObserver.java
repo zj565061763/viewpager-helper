@@ -29,11 +29,12 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
     {
         viewPager.addOnAdapterChangeListener(mOnAdapterChangeListener);
 
-        PagerAdapter adapter = viewPager.getAdapter();
+        final PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
         {
             adapter.registerDataSetObserver(mDataSetObserver);
-            mDataSetObserver.onChanged(); // 手动通知一次
+            // 手动通知一次
+            mDataSetObserver.onChanged();
         }
     }
 
@@ -42,14 +43,12 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
     {
         viewPager.removeOnAdapterChangeListener(mOnAdapterChangeListener);
 
-        PagerAdapter adapter = viewPager.getAdapter();
+        final PagerAdapter adapter = viewPager.getAdapter();
         if (adapter != null)
-        {
             adapter.unregisterDataSetObserver(mDataSetObserver);
-        }
     }
 
-    private ViewPager.OnAdapterChangeListener mOnAdapterChangeListener = new ViewPager.OnAdapterChangeListener()
+    private final ViewPager.OnAdapterChangeListener mOnAdapterChangeListener = new ViewPager.OnAdapterChangeListener()
     {
         @Override
         public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
@@ -67,7 +66,7 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
         }
     };
 
-    private DataSetObserver mDataSetObserver = new DataSetObserver()
+    private final DataSetObserver mDataSetObserver = new DataSetObserver()
     {
         @Override
         public void onChanged()
