@@ -20,7 +20,7 @@ import android.support.v4.view.ViewPager;
 /**
  * 选中非选中监听
  */
-public abstract class FPagerSelectChangeListener extends FPagerDataSetObserver implements ViewPager.OnPageChangeListener
+public abstract class FPagerSelectChangeListener extends FPagerDataSetObserver
 {
     private int mLastSelected;
 
@@ -28,67 +28,57 @@ public abstract class FPagerSelectChangeListener extends FPagerDataSetObserver i
     protected void onInit(ViewPager viewPager)
     {
         super.onInit(viewPager);
-        viewPager.addOnPageChangeListener(this);
+        viewPager.addOnPageChangeListener(mOnPageChangeListener);
     }
 
     @Override
     protected void onRelease(ViewPager viewPager)
     {
         super.onRelease(viewPager);
-        viewPager.removeOnPageChangeListener(this);
+        viewPager.removeOnPageChangeListener(mOnPageChangeListener);
     }
+
+    private final ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener()
+    {
+        @Override
+        public void onPageScrolled(int i, float v, int i1)
+        {
+        }
+
+        @Override
+        public void onPageSelected(int position)
+        {
+            setSelected(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i)
+        {
+        }
+    };
 
     @Override
     protected void onDataSetChanged()
     {
-        updateSelected();
-    }
-
-    /**
-     * 刷新选中位置，用于ViewPager对象变更，或者Adapter对象变更
-     */
-    private void updateSelected()
-    {
         final ViewPager viewPager = getViewPager();
         if (viewPager != null)
-        {
-            int index = viewPager.getCurrentItem();
-            setSelected(index);
-        }
+            setSelected(viewPager.getCurrentItem());
     }
 
     private void setSelected(int index)
     {
         if (isIndexLegal(index))
         {
-            notifySelectChanged(mLastSelected, false);
-            notifySelectChanged(index, true);
+            notifySelectedChanged(mLastSelected, false);
+            notifySelectedChanged(index, true);
             mLastSelected = index;
         }
     }
 
-    private void notifySelectChanged(int index, boolean selected)
+    private void notifySelectedChanged(int index, boolean selected)
     {
         if (isIndexLegal(index))
-        {
             onSelectChanged(index, selected);
-        }
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-    {
-    }
-
-    @Override
-    public void onPageSelected(int position)
-    {
-        setSelected(position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state)
-    {
     }
 
     /**
