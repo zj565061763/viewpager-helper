@@ -1,8 +1,13 @@
-## About
+# About
 主要封装一些和ViewPager相关的帮助类，考虑了ViewPager对象以及PagerAdapter对象发生变化的时候需要做的初始化和释放逻辑
 
-## Gradle
-[![](https://jitpack.io/v/zj565061763/viewpager-helper.svg)](https://jitpack.io/#zj565061763/viewpager-helper)
+# Gradle
+```
+implementation 'com.fanwe.android:viewpager-helper:1.0.5'
+
+// 依赖以下库
+implementation 'com.android.support:support-v4:+'
+```
 
 ## 简介
 * FPagerDataSetObserver (PagerAdapter数据集变化监听)
