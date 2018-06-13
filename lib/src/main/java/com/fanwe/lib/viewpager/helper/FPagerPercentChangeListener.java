@@ -20,7 +20,7 @@ import android.support.v4.view.ViewPager;
 /**
  * 页面滚动百分比监听
  */
-public abstract class FPagerPercentChangeListener extends FViewPagerHolder implements ViewPager.OnPageChangeListener
+public abstract class FPagerPercentChangeListener extends FViewPagerHolder
 {
     private int mScrollState = ViewPager.SCROLL_STATE_IDLE;
     private float mLastOffset = -1;
@@ -29,106 +29,103 @@ public abstract class FPagerPercentChangeListener extends FViewPagerHolder imple
     @Override
     protected void onInit(ViewPager viewPager)
     {
-        viewPager.addOnPageChangeListener(this);
+        viewPager.addOnPageChangeListener(mOnPageChangeListener);
     }
 
     @Override
     protected void onRelease(ViewPager viewPager)
     {
-        viewPager.removeOnPageChangeListener(this);
+        viewPager.removeOnPageChangeListener(mOnPageChangeListener);
     }
+
+    private final ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener()
+    {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+        {
+            final float currentOffset = position + positionOffset;
+            if (mLastOffset < 0)
+                mLastOffset = currentOffset;
+
+            if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
+            {
+                if (currentOffset == mLastOffset)
+                {
+                    // 已经拖动到边界，继续拖动不处理
+                    return;
+                }
+            }
+
+            final boolean isMoveLeft = currentOffset >= mLastOffset; //内容是否向左滑动
+
+            int leavePosition = 0;
+            int enterPosition = 0;
+            if (isMoveLeft)
+            {
+                if (positionOffset == 0)
+                {
+                    //刚好滑动到新的一页
+                    leavePosition = position - 1;
+                    enterPosition = position;
+                    positionOffset = 1.0f;
+                } else
+                {
+                    leavePosition = position;
+                    enterPosition = position + 1;
+                }
+            } else
+            {
+                leavePosition = position + 1;
+                enterPosition = position;
+            }
+
+            if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
+            {
+                final int diff = position - mLastPosition;
+                if (Math.abs(diff) > 1)
+                {
+                    final int start = Math.min(position, mLastPosition) + 1;
+                    final int end = Math.max(position, mLastPosition);
+                    for (int i = start; i < end; i++)
+                    {
+                        if (i == leavePosition || i == enterPosition)
+                            continue;
+
+                        notifyShowPercent(i, 0, false, isMoveLeft);
+                    }
+                }
+            }
+
+            if (isMoveLeft)
+            {
+                notifyShowPercent(leavePosition, 1 - positionOffset, false, isMoveLeft);
+                notifyShowPercent(enterPosition, positionOffset, true, isMoveLeft);
+            } else
+            {
+                notifyShowPercent(leavePosition, positionOffset, false, isMoveLeft);
+                notifyShowPercent(enterPosition, 1 - positionOffset, true, isMoveLeft);
+            }
+
+            mLastOffset = currentOffset;
+            mLastPosition = position;
+        }
+
+        @Override
+        public void onPageSelected(int position)
+        {
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state)
+        {
+            mScrollState = state;
+        }
+    };
 
     private void notifyShowPercent(int position, float percent, boolean isEnter, boolean isMoveLeft)
     {
         if (isIndexLegal(position))
-        {
             onShowPercent(position, percent, isEnter, isMoveLeft);
-        }
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-    {
-        final float currentOffset = position + positionOffset;
-        if (mLastOffset < 0)
-        {
-            mLastOffset = currentOffset;
-        }
-
-        if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
-        {
-            if (currentOffset == mLastOffset)
-            {
-                // 已经拖动到边界，继续拖动不处理
-                return;
-            }
-        }
-
-        final boolean isMoveLeft = currentOffset >= mLastOffset; //内容是否向左滑动
-
-        int leavePosition = 0;
-        int enterPosition = 0;
-        if (isMoveLeft)
-        {
-            if (positionOffset == 0)
-            {
-                //刚好滑动到新的一页
-                leavePosition = position - 1;
-                enterPosition = position;
-                positionOffset = 1.0f;
-            } else
-            {
-                leavePosition = position;
-                enterPosition = position + 1;
-            }
-        } else
-        {
-            leavePosition = position + 1;
-            enterPosition = position;
-        }
-
-        if (mScrollState != ViewPager.SCROLL_STATE_IDLE)
-        {
-            final int diff = position - mLastPosition;
-            if (Math.abs(diff) > 1)
-            {
-                final int start = Math.min(position, mLastPosition) + 1;
-                final int end = Math.max(position, mLastPosition);
-                for (int i = start; i < end; i++)
-                {
-                    if (i == leavePosition || i == enterPosition)
-                    {
-                        continue;
-                    }
-                    notifyShowPercent(i, 0, false, isMoveLeft);
-                }
-            }
-        }
-
-        if (isMoveLeft)
-        {
-            notifyShowPercent(leavePosition, 1 - positionOffset, false, isMoveLeft);
-            notifyShowPercent(enterPosition, positionOffset, true, isMoveLeft);
-        } else
-        {
-            notifyShowPercent(leavePosition, positionOffset, false, isMoveLeft);
-            notifyShowPercent(enterPosition, 1 - positionOffset, true, isMoveLeft);
-        }
-
-        mLastOffset = currentOffset;
-        mLastPosition = position;
-    }
-
-    @Override
-    public void onPageSelected(int position)
-    {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state)
-    {
-        mScrollState = state;
     }
 
     /**
