@@ -20,9 +20,6 @@ import android.support.v4.view.ViewPager;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Created by zhengjun on 2018/3/2.
- */
 public abstract class FViewPagerHolder
 {
     private WeakReference<ViewPager> mViewPager;
