@@ -54,13 +54,10 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
         public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
         {
             if (oldAdapter != null)
-            {
                 oldAdapter.unregisterDataSetObserver(mDataSetObserver);
-            }
+
             if (newAdapter != null)
-            {
                 newAdapter.registerDataSetObserver(mDataSetObserver);
-            }
 
             mDataSetObserver.onChanged(); // 手动通知一次
         }
