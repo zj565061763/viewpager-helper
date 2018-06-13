@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.fanwe.lib.viewpager.helper.FPagerPercentChangeListener;
-import com.fanwe.lib.viewpager.helper.FPagerSelectChangeListener;
+import com.fanwe.lib.viewpager.helper.FPagerSelectedChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
 
         mViewPager.setAdapter(mAdapter);
 
-        mPagerSelectChangeListener.setViewPager(mViewPager);
+        mPagerSelectedChangeListener.setViewPager(mViewPager);
         mPagerPercentChangeListener.setViewPager(mViewPager);
 
         fillData();
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * 选中监听
      */
-    private FPagerSelectChangeListener mPagerSelectChangeListener = new FPagerSelectChangeListener()
+    private FPagerSelectedChangeListener mPagerSelectedChangeListener = new FPagerSelectedChangeListener()
     {
         @Override
         protected void onDataSetChanged()
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
             PagerIndicatorItem item = (PagerIndicatorItem) mLinearLayout.getChildAt(index);
             if (item != null)
             {
-                item.onSelectChanged(selected);
+                item.onSelectedChanged(selected);
             }
             Log.i(TAG, "onSelectedChanged:" + index + " " + selected);
         }

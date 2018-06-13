@@ -29,10 +29,10 @@ public class PagerIndicatorItem extends AppCompatTextView
     private void init()
     {
         setGravity(Gravity.CENTER);
-        onSelectChanged(false);
+        onSelectedChanged(false);
     }
 
-    public void onSelectChanged(boolean selected)
+    public void onSelectedChanged(boolean selected)
     {
         if (selected)
         {

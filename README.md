@@ -12,5 +12,5 @@ implementation 'com.android.support:support-v4:+'
 ## 简介
 * FPagerDataSetObserver (PagerAdapter数据集变化监听)
 * FPagerPercentChangeListener (页面滚动百分比监听)
-* FPagerSelectChangeListener (选中非选中监听)
+* FPagerSelectedChangeListener (选中非选中监听)
 * FPagerPlayer (页面轮播)
