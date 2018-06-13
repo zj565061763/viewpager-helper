@@ -30,21 +30,14 @@ public class FPagerPlayer extends FViewPagerHolder
     /**
      * 默认轮播间隔
      */
-    private static final long DEFAULT_PLAY_SPAN = 1000 * 5;
+    private static final long DEFAULT_PLAY_SPAN = 5 * 1000;
+
     private long mPlaySpan = DEFAULT_PLAY_SPAN;
     private boolean mIsNeedPlay = false;
     private boolean mIsPlaying = false;
     private CountDownTimer mTimer;
-    private Handler mHandler;
 
-    private Handler getHandler()
-    {
-        if (mHandler == null)
-        {
-            mHandler = new Handler(Looper.getMainLooper());
-        }
-        return mHandler;
-    }
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onInit(ViewPager viewPager)
@@ -58,15 +51,14 @@ public class FPagerPlayer extends FViewPagerHolder
 
     }
 
-    private View.OnTouchListener mInternalOnTouchListener = new View.OnTouchListener()
+    private final View.OnTouchListener mInternalOnTouchListener = new View.OnTouchListener()
     {
         @Override
         public boolean onTouch(View v, MotionEvent event)
         {
             if (v == getViewPager())
-            {
                 processTouchEvent(event);
-            }
+
             return false;
         }
     };
@@ -112,13 +104,10 @@ public class FPagerPlayer extends FViewPagerHolder
     public void startPlay(long playSpan)
     {
         if (!canPlay())
-        {
             return;
-        }
+
         if (playSpan < 0)
-        {
             playSpan = DEFAULT_PLAY_SPAN;
-        }
 
         mPlaySpan = playSpan;
         mIsNeedPlay = true;
@@ -128,17 +117,13 @@ public class FPagerPlayer extends FViewPagerHolder
     private void startPlayInternal()
     {
         if (mIsPlaying)
-        {
             return;
-        }
+
         if (!mIsNeedPlay)
-        {
             return;
-        }
+
         if (!canPlay())
-        {
             return;
-        }
 
         if (mTimer == null)
         {
@@ -155,7 +140,9 @@ public class FPagerPlayer extends FViewPagerHolder
                 {
                 }
             };
-            getHandler().postDelayed(mStartTimerRunnable, mPlaySpan);
+
+            mHandler.removeCallbacks(mStartTimerRunnable);
+            mHandler.postDelayed(mStartTimerRunnable, mPlaySpan);
             mIsPlaying = true;
         }
     }
@@ -167,22 +154,19 @@ public class FPagerPlayer extends FViewPagerHolder
             int current = getViewPager().getCurrentItem();
             current++;
             if (current >= getAdapterCount())
-            {
                 current = 0;
-            }
+
             getViewPager().setCurrentItem(current, true);
         }
     }
 
-    private Runnable mStartTimerRunnable = new Runnable()
+    private final Runnable mStartTimerRunnable = new Runnable()
     {
         @Override
         public void run()
         {
             if (mTimer != null)
-            {
                 mTimer.start();
-            }
         }
     };
 
@@ -198,9 +182,7 @@ public class FPagerPlayer extends FViewPagerHolder
     private void stopPlayInternal()
     {
         if (mHandler != null)
-        {
             mHandler.removeCallbacks(mStartTimerRunnable);
-        }
 
         if (mTimer != null)
         {
