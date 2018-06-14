@@ -25,23 +25,20 @@ public abstract class FPagerSelectedChangeListener extends FPagerDataSetObserver
     private int mLastSelected;
 
     @Override
-    protected void onInit(ViewPager viewPager)
+    protected void onViewPagerChanged(ViewPager newPager, ViewPager oldPager)
     {
-        super.onInit(viewPager);
-        viewPager.addOnPageChangeListener(mOnPageChangeListener);
-    }
+        super.onViewPagerChanged(newPager, oldPager);
+        if (oldPager != null)
+            oldPager.removeOnPageChangeListener(mOnPageChangeListener);
 
-    @Override
-    protected void onRelease(ViewPager viewPager)
-    {
-        super.onRelease(viewPager);
-        viewPager.removeOnPageChangeListener(mOnPageChangeListener);
+        if (newPager != null)
+            newPager.addOnPageChangeListener(mOnPageChangeListener);
     }
 
     private final ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener()
     {
         @Override
-        public void onPageScrolled(int i, float v, int i1)
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
         {
         }
 
@@ -52,7 +49,7 @@ public abstract class FPagerSelectedChangeListener extends FPagerDataSetObserver
         }
 
         @Override
-        public void onPageScrollStateChanged(int i)
+        public void onPageScrollStateChanged(int state)
         {
         }
     };

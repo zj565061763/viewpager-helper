@@ -25,27 +25,26 @@ import android.support.v4.view.ViewPager;
 public abstract class FPagerDataSetObserver extends FViewPagerHolder
 {
     @Override
-    protected void onInit(ViewPager viewPager)
+    protected void onViewPagerChanged(ViewPager newPager, ViewPager oldPager)
     {
-        viewPager.addOnAdapterChangeListener(mOnAdapterChangeListener);
-
-        final PagerAdapter adapter = viewPager.getAdapter();
-        if (adapter != null)
+        if (oldPager != null)
         {
-            adapter.registerDataSetObserver(mDataSetObserver);
-            // 手动通知一次
-            mDataSetObserver.onChanged();
+            oldPager.removeOnAdapterChangeListener(mOnAdapterChangeListener);
+            final PagerAdapter adapter = oldPager.getAdapter();
+            if (adapter != null)
+                adapter.unregisterDataSetObserver(mDataSetObserver);
         }
-    }
 
-    @Override
-    protected void onRelease(ViewPager viewPager)
-    {
-        viewPager.removeOnAdapterChangeListener(mOnAdapterChangeListener);
-
-        final PagerAdapter adapter = viewPager.getAdapter();
-        if (adapter != null)
-            adapter.unregisterDataSetObserver(mDataSetObserver);
+        if (newPager != null)
+        {
+            newPager.addOnAdapterChangeListener(mOnAdapterChangeListener);
+            final PagerAdapter adapter = newPager.getAdapter();
+            if (adapter != null)
+            {
+                adapter.registerDataSetObserver(mDataSetObserver);
+                mDataSetObserver.onChanged();
+            }
+        }
     }
 
     private final ViewPager.OnAdapterChangeListener mOnAdapterChangeListener = new ViewPager.OnAdapterChangeListener()
@@ -59,7 +58,7 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
             if (newAdapter != null)
                 newAdapter.registerDataSetObserver(mDataSetObserver);
 
-            mDataSetObserver.onChanged(); // 手动通知一次
+            mDataSetObserver.onChanged();
         }
     };
 

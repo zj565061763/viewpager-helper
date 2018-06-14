@@ -3,7 +3,7 @@
 
 # Gradle
 ```
-implementation 'com.fanwe.android:viewpager-helper:1.0.5'
+implementation 'com.fanwe.android:viewpager-helper:1.0.6'
 
 // 依赖以下库
 implementation 'com.android.support:support-v4:+'

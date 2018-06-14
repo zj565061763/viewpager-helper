@@ -27,15 +27,13 @@ public abstract class FPagerPercentChangeListener extends FViewPagerHolder
     private int mLastPosition = -1;
 
     @Override
-    protected void onInit(ViewPager viewPager)
+    protected void onViewPagerChanged(ViewPager newPager, ViewPager oldPager)
     {
-        viewPager.addOnPageChangeListener(mOnPageChangeListener);
-    }
+        if (oldPager != null)
+            oldPager.removeOnPageChangeListener(mOnPageChangeListener);
 
-    @Override
-    protected void onRelease(ViewPager viewPager)
-    {
-        viewPager.removeOnPageChangeListener(mOnPageChangeListener);
+        if (newPager != null)
+            newPager.addOnPageChangeListener(mOnPageChangeListener);
     }
 
     private final ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener()
