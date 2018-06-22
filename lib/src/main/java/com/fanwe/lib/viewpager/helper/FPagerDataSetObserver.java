@@ -38,8 +38,8 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
 
         if (newPager != null)
         {
-            newPager.addOnAdapterChangeListener(mOnAdapterChangeListener);
             mDataSetObserver.register(newPager.getAdapter());
+            newPager.addOnAdapterChangeListener(mOnAdapterChangeListener);
         }
     }
 
