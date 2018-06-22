@@ -27,7 +27,7 @@ public abstract class FPagerSelectedChangeListener extends FPagerDataSetObserver
     @Override
     protected void onViewPagerChanged(ViewPager oldPager, ViewPager newPager)
     {
-        super.onViewPagerChanged(newPager, oldPager);
+        super.onViewPagerChanged(oldPager, newPager);
         if (oldPager != null)
             oldPager.removeOnPageChangeListener(mOnPageChangeListener);
 
