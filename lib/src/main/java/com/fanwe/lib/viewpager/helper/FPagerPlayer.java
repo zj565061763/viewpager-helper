@@ -40,7 +40,7 @@ public class FPagerPlayer extends FViewPagerHolder
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
-    protected void onViewPagerChanged(ViewPager newPager, ViewPager oldPager)
+    protected void onViewPagerChanged(ViewPager oldPager, ViewPager newPager)
     {
         if (newPager != null)
             newPager.setOnTouchListener(mInternalOnTouchListener);

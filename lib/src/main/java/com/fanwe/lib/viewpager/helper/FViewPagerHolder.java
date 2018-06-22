@@ -38,7 +38,7 @@ public abstract class FViewPagerHolder
         if (old != viewPager)
         {
             mViewPager = viewPager == null ? null : new WeakReference<>(viewPager);
-            onViewPagerChanged(viewPager, old);
+            onViewPagerChanged(old, viewPager);
         }
     }
 
@@ -81,5 +81,5 @@ public abstract class FViewPagerHolder
         }
     }
 
-    protected abstract void onViewPagerChanged(ViewPager newPager, ViewPager oldPager);
+    protected abstract void onViewPagerChanged(ViewPager oldPager, ViewPager newPager);
 }

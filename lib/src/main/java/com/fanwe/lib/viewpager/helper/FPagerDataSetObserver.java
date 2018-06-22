@@ -25,7 +25,7 @@ import android.support.v4.view.ViewPager;
 public abstract class FPagerDataSetObserver extends FViewPagerHolder
 {
     @Override
-    protected void onViewPagerChanged(ViewPager newPager, ViewPager oldPager)
+    protected void onViewPagerChanged(ViewPager oldPager, ViewPager newPager)
     {
         if (oldPager != null)
         {
