@@ -19,31 +19,27 @@ import android.database.DataSetObserver;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import java.lang.ref.WeakReference;
+
 /**
  * PagerAdapter数据集变化监听
  */
 public abstract class FPagerDataSetObserver extends FViewPagerHolder
 {
+    private final InternalDataSetObserver mDataSetObserver = new InternalDataSetObserver();
+
     @Override
     protected void onViewPagerChanged(ViewPager oldPager, ViewPager newPager)
     {
+        mDataSetObserver.register(null);
+
         if (oldPager != null)
-        {
             oldPager.removeOnAdapterChangeListener(mOnAdapterChangeListener);
-            final PagerAdapter adapter = oldPager.getAdapter();
-            if (adapter != null)
-                adapter.unregisterDataSetObserver(mDataSetObserver);
-        }
 
         if (newPager != null)
         {
             newPager.addOnAdapterChangeListener(mOnAdapterChangeListener);
-            final PagerAdapter adapter = newPager.getAdapter();
-            if (adapter != null)
-            {
-                adapter.registerDataSetObserver(mDataSetObserver);
-                mDataSetObserver.onChanged();
-            }
+            mDataSetObserver.register(newPager.getAdapter());
         }
     }
 
@@ -52,18 +48,38 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
         @Override
         public void onAdapterChanged(ViewPager viewPager, PagerAdapter oldAdapter, PagerAdapter newAdapter)
         {
-            if (oldAdapter != null)
-                oldAdapter.unregisterDataSetObserver(mDataSetObserver);
-
-            if (newAdapter != null)
-                newAdapter.registerDataSetObserver(mDataSetObserver);
-
-            mDataSetObserver.onChanged();
+            mDataSetObserver.register(newAdapter);
         }
     };
 
-    private final DataSetObserver mDataSetObserver = new DataSetObserver()
+    private final class InternalDataSetObserver extends DataSetObserver
     {
+        private WeakReference<PagerAdapter> mPagerAdapter;
+
+        private PagerAdapter getPagerAdapter()
+        {
+            return mPagerAdapter == null ? null : mPagerAdapter.get();
+        }
+
+        public final void register(PagerAdapter adapter)
+        {
+            final PagerAdapter old = getPagerAdapter();
+            if (old != adapter)
+            {
+                if (old != null)
+                    old.unregisterDataSetObserver(this);
+
+                mPagerAdapter = adapter == null ? null : new WeakReference<>(adapter);
+
+                if (adapter != null)
+                {
+                    adapter.registerDataSetObserver(this);
+                    // 注册后，立即通知一次
+                    this.onChanged();
+                }
+            }
+        }
+
         @Override
         public void onChanged()
         {
@@ -75,7 +91,7 @@ public abstract class FPagerDataSetObserver extends FViewPagerHolder
         {
             FPagerDataSetObserver.this.onInvalidated();
         }
-    };
+    }
 
     protected abstract void onDataSetChanged();
 
