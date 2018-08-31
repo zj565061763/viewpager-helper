@@ -1,4 +1,4 @@
-package com.fanwe.viewpager_helper;
+package com.sd.viewpager_helper;
 
 import android.content.Context;
 import android.graphics.Color;

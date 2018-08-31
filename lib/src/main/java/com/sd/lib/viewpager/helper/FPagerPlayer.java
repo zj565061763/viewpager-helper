@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fanwe.lib.viewpager.helper;
+package com.sd.lib.viewpager.helper;
 
 import android.os.CountDownTimer;
 import android.os.Handler;

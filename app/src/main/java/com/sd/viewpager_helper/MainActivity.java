@@ -1,4 +1,4 @@
-package com.fanwe.viewpager_helper;
+package com.sd.viewpager_helper;
 
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.fanwe.lib.viewpager.helper.FPagerPercentChangeListener;
-import com.fanwe.lib.viewpager.helper.FPagerSelectedChangeListener;
+import com.sd.lib.viewpager.helper.FPagerPercentChangeListener;
+import com.sd.lib.viewpager.helper.FPagerSelectedChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
