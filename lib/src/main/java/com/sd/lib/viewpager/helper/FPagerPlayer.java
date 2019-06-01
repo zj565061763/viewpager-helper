@@ -15,9 +15,9 @@ public class FPagerPlayer extends FViewPagerHolder
     /**
      * 默认轮播间隔
      */
-    private static final long DEFAULT_PLAY_SPAN = 5 * 1000;
+    private static final long DEFAULT_PLAY_DURATION = 5 * 1000;
 
-    private long mPlaySpan = DEFAULT_PLAY_SPAN;
+    private long mPlayDuration = DEFAULT_PLAY_DURATION;
     private boolean mIsNeedPlay = false;
     private boolean mIsPlaying = false;
     private CountDownTimer mTimer;
@@ -73,23 +73,23 @@ public class FPagerPlayer extends FViewPagerHolder
      */
     public void startPlay()
     {
-        startPlay(DEFAULT_PLAY_SPAN);
+        startPlay(DEFAULT_PLAY_DURATION);
     }
 
     /**
      * 开始轮播
      *
-     * @param playSpan 轮播间隔(毫秒)
+     * @param duration 轮播间隔(毫秒)
      */
-    public void startPlay(long playSpan)
+    public void startPlay(long duration)
     {
         if (!canPlay())
             return;
 
-        if (playSpan < 0)
-            playSpan = DEFAULT_PLAY_SPAN;
+        if (duration <= 0)
+            duration = DEFAULT_PLAY_DURATION;
 
-        mPlaySpan = playSpan;
+        mPlayDuration = duration;
         mIsNeedPlay = true;
         startPlayInternal();
     }
@@ -107,7 +107,7 @@ public class FPagerPlayer extends FViewPagerHolder
 
         if (mTimer == null)
         {
-            mTimer = new CountDownTimer(Long.MAX_VALUE, mPlaySpan)
+            mTimer = new CountDownTimer(Long.MAX_VALUE, mPlayDuration)
             {
                 @Override
                 public void onTick(long millisUntilFinished)
@@ -122,7 +122,7 @@ public class FPagerPlayer extends FViewPagerHolder
             };
 
             mHandler.removeCallbacks(mStartTimerRunnable);
-            mHandler.postDelayed(mStartTimerRunnable, mPlaySpan);
+            mHandler.postDelayed(mStartTimerRunnable, mPlayDuration);
             mIsPlaying = true;
         }
     }
@@ -161,8 +161,7 @@ public class FPagerPlayer extends FViewPagerHolder
 
     private void stopPlayInternal()
     {
-        if (mHandler != null)
-            mHandler.removeCallbacks(mStartTimerRunnable);
+        mHandler.removeCallbacks(mStartTimerRunnable);
 
         if (mTimer != null)
         {
