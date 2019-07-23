@@ -1,6 +1,6 @@
 package com.sd.lib.viewpager.helper;
 
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * 选中非选中监听

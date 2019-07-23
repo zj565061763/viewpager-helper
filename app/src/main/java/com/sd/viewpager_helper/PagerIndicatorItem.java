@@ -2,9 +2,10 @@ package com.sd.viewpager_helper;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.Gravity;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 public class PagerIndicatorItem extends AppCompatTextView
 {

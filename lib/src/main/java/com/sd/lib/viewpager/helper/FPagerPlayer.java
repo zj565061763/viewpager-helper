@@ -3,9 +3,10 @@ package com.sd.lib.viewpager.helper;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * ViewPager轮播类
