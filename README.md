@@ -3,11 +3,6 @@
 
 # Gradle
 [![](https://jitpack.io/v/zj565061763/viewpager-helper.svg)](https://jitpack.io/#zj565061763/viewpager-helper)
-<br>
-本库需要依赖以下库：
-```
-implementation 'com.android.support:support-v4:+'
-```
 
 ## 简介
 * FPagerDataSetObserver (PagerAdapter数据集变化监听)
