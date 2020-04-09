@@ -12,6 +12,9 @@ import com.sd.lib.viewpager.helper.R;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+/**
+ * 监听某个view在ViewPager中的选中和非选中状态
+ */
 public abstract class FPagerChildListener
 {
     private final Map<View, String> mMapParent = new WeakHashMap<>();
@@ -41,6 +44,11 @@ public abstract class FPagerChildListener
         return mDataSetObserver.getViewPager();
     }
 
+    /**
+     * 开始搜寻父类，查找ViewPager，如果找到则开始监听选中状态
+     *
+     * @return
+     */
     public final boolean start()
     {
         final View view = getView();
@@ -54,6 +62,9 @@ public abstract class FPagerChildListener
         return viewPager != null;
     }
 
+    /**
+     * 停止监听
+     */
     public final void stop()
     {
         mDataSetObserver.setViewPager(null);
