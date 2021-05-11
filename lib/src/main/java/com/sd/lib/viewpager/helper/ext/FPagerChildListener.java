@@ -34,11 +34,6 @@ public abstract class FPagerChildListener
         return mSelected;
     }
 
-    public final View getView()
-    {
-        return mView;
-    }
-
     public final ViewPager getViewPager()
     {
         return mDataSetObserver.getViewPager();
@@ -51,7 +46,7 @@ public abstract class FPagerChildListener
      */
     public final boolean start()
     {
-        final View view = getView();
+        final View view = mView;
         if (!isAttached(view))
             return false;
 
@@ -76,7 +71,6 @@ public abstract class FPagerChildListener
         protected void onViewPagerChanged(ViewPager oldPager, ViewPager newPager)
         {
             super.onViewPagerChanged(oldPager, newPager);
-
             if (oldPager != null)
                 oldPager.removeOnPageChangeListener(mOnPageChangeListener);
 
