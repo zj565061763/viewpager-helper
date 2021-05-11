@@ -3,8 +3,8 @@ apply plugin: 'maven-publish'
 
 def libGroupId = "com.sd.lib.android"
 def libArtifactId = "viewpager-helper"
-def libVersionCode = 20200409
-def libVersionName = "1.1.4"
+def libVersionCode = 20210511
+def libVersionName = "1.1.5"
 
 android {
     compileSdkVersion 29
