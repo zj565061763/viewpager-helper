@@ -17,7 +17,7 @@ import java.util.WeakHashMap;
  */
 public abstract class FPagerChildListener
 {
-    private final Map<View, String> mMapParent = new WeakHashMap<>();
+    private final Map<View, String> mMapViewTree = new WeakHashMap<>();
     private final View mView;
 
     private boolean mSelected;
@@ -79,7 +79,7 @@ public abstract class FPagerChildListener
                 newPager.addOnPageChangeListener(mOnPageChangeListener);
             } else
             {
-                mMapParent.clear();
+                mMapViewTree.clear();
                 setSelected(false);
             }
         }
@@ -116,7 +116,7 @@ public abstract class FPagerChildListener
         if (child == null)
             return false;
 
-        final boolean isSelected = mMapParent.containsKey(child);
+        final boolean isSelected = mMapViewTree.containsKey(child);
         setSelected(isSelected);
         return isSelected;
     }
@@ -150,30 +150,24 @@ public abstract class FPagerChildListener
     {
         ViewPager viewPager = null;
 
-        mMapParent.clear();
-        mMapParent.put(view, "");
+        mMapViewTree.clear();
+        mMapViewTree.put(view, "");
 
-        ViewParent parent = view.getParent();
-        while (true)
+        ViewParent current = view.getParent();
+        while (current != null && (current instanceof View))
         {
-            if (parent == null)
-                break;
-
-            if (!(parent instanceof View))
-                break;
-
-            if (parent instanceof ViewPager)
+            if (current instanceof ViewPager)
             {
-                viewPager = (ViewPager) parent;
+                viewPager = (ViewPager) current;
                 break;
             }
 
-            mMapParent.put((View) parent, "");
-            parent = parent.getParent();
+            mMapViewTree.put((View) current, "");
+            current = current.getParent();
         }
 
         if (viewPager == null)
-            mMapParent.clear();
+            mMapViewTree.clear();
 
         return viewPager;
     }
